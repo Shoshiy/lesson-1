@@ -1,21 +1,50 @@
-'use strict';
-const products = [
-    {id: 1, title: 'Notebook', price: 1000},
-    {id: 2, title: 'Mouse', price: 100},
-    {id: 3, title: 'Keyboard', price: 250},
-    {id: 4, title: 'Gamepad', price: 150},
-];
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-const renderProduct = card => 
-     `<div class="product-card">
-                <h3>${card.title}</h3>
-                <p>${card.price}</p>
-                <button class="by-btn">Добавить</button>
-              </div>`;
+const app = new Vue({
+    el: '#app',
+    methods: {
+        getJson(url) {
+            return fetch(url)
+                .then(result => result.json())
+                .catch(error => {
+                    this.$refs.error.setError(error);
+                })
+        },
+        postJson(url, data) {
+            return fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(result => result.json())
+                .catch(error => {
+                    this.$refs.error.setError(error);
+                });
+        },
+        putJson(url, data) {
+            return fetch(url, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(result => result.json())
+                .catch(error => {
+                    this.$refs.error.setError(error);
+                });
+        },
+        deleteJson(url) {
+            return fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            }).then(result => result.json())
+                .catch(error => {
+                    this.$refs.error.setError(error);
+                });
+        },
+    },
+});
 
-const renderProducts = list => {
-    document.querySelector('.products').insertAdjacentHTML("beforeend", list.map(card => renderProduct(card)).join(" "));
-    console.log(list);
-}
-
-renderProducts(products);
